@@ -13,18 +13,18 @@ RUN apt-get update && apt-get install -y \
 	bzip2 \
 	libbz2-dev \
 	libmemcached-dev \
-	&& echo "extension=mbstring.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && echo "extension=iconv.so" > /usr/local/etc/php/conf.d/phalcon.ini  \
-    && echo "extension=gd.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && echo "extension=mysqli.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && echo "extension=bz2.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && echo "extension=ctype.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && echo "extension=zip.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=pdo.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=pdo_mysql.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=php-memcached.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=phpredis.so" > /usr/local/etc/php/conf.d/phalcon.ini \
+	&& echo "extension=mbstring.so" > /usr/local/etc/php/conf.d/mbstring.ini \
+    && echo "extension=iconv.so" > /usr/local/etc/php/conf.d/iconv.ini  \
+    && echo "extension=gd.so" > /usr/local/etc/php/conf.d/gd.ini \
+	&& echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/mcrypt.ini \
+    && echo "extension=mysqli.so" > /usr/local/etc/php/conf.d/mysqli.ini \
+    && echo "extension=bz2.so" > /usr/local/etc/php/conf.d/bz2.ini \
+    && echo "extension=ctype.so" > /usr/local/etc/php/conf.d/ctype.ini \
+    && echo "extension=zip.so" > /usr/local/etc/php/conf.d/zip.ini \
+	&& echo "extension=pdo.so" > /usr/local/etc/php/conf.d/pdo.ini \
+	&& echo "extension=pdo_mysql.so" > /usr/local/etc/php/conf.d/pdo_mysql.ini \
+	&& echo "extension=php-memcached.so" > /usr/local/etc/php/conf.d/php-memcached.ini \
+	&& echo "extension=phpredis.so" > /usr/local/etc/php/conf.d/phpredis.ini \
 	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
 
 #Composer

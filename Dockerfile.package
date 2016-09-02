@@ -1,0 +1,15 @@
+FROM daocloud.io/library/php:5.6.25-fpm-alpine
+
+MAINTAINER Minho <longfei6671@163.com>
+
+COPY usr/local/lib/php/extensions/no-debug-non-zts-20151012 /usr/local/lib/php/extensions/no-debug-non-zts-20151012
+
+#Composer
+RUN curl -sS https://getcomposer.org/installer | php \
+	&& mv composer.phar /usr/local/bin/composer
+
+# PHP config
+ADD conf/php.ini /usr/local/etc/php/php.ini
+ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
+		
+EXPOSE 9000

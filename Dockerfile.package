@@ -13,19 +13,19 @@ RUN apt-get update && apt-get install -y \
 	bzip2 \
 	libbz2-dev \
 	libmemcached-dev \
-	&&docker-php-ext-install mbstring \
-    && docker-php-ext-install iconv  \
-    && docker-php-ext-install gd \
-	&& docker-php-ext-install mcrypt \
-    && docker-php-ext-install mysqli \
-    && docker-php-ext-install bz2 \
-    && docker-php-ext-install ctype \
-    && docker-php-ext-install zip \
-	&& docker-php-ext-install pdo \
-	&& docker-php-ext-install pdo_mysql \
-	&& docker-php-ext-install php-memcached \
-	&& docker-php-ext-install phpredis \
-	echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=mbstring.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=iconv.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=gd.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=mysqli.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=bz2.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=ctype.so" > /usr/local/etc/php/conf.d/phalcon.ini
+    && echo "extension=zip.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=pdo.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=pdo_mysql.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=php-memcached.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=phpredis.so" > /usr/local/etc/php/conf.d/phalcon.ini
+	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \

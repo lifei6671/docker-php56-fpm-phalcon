@@ -1,8 +1,19 @@
-FROM daocloud.io/library/php:5.6.25-fpm-alpine
+FROM daocloud.io/library/php:5.6.25-fpm
 
 MAINTAINER Minho <longfei6671@163.com>
 
 COPY usr/local/lib/php/extensions/no-debug-non-zts-20151012 /usr/local/lib/php/extensions/no-debug-non-zts-20151012
+
+RUN docker-php-ext-install mbstring \
+    && docker-php-ext-install iconv mcrypt \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install bz2 \
+    && docker-php-ext-install ctype \
+    && docker-php-ext-install zip \
+	&& docker-php-ext-install pdo \
+	&& docker-php-ext-install pdo_mysql \
+	echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini && \
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \

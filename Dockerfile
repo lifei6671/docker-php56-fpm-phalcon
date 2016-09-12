@@ -1,76 +1,64 @@
-FROM daocloud.io/library/php:5.6.25-fpm-alpine
+FROM daocloud.io/library/php:5.6.25-fpm
 
 MAINTAINER Minho <longfei6671@163.com>
 
-# Environments
-ENV TIMEZONE            Asia/Jakarta
-ENV PHP_MEMORY_LIMIT    512M
-ENV MAX_UPLOAD          50M
-ENV PHP_MAX_FILE_UPLOAD 200
-ENV PHP_MAX_POST        100M
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libpng12-dev \
+		libpcre3-dev \
+		gcc \
+		make \
+        bzip2 \
+	libbz2-dev \
+	libmemcached-dev \
+	git \
+    && rm -rf /var/lib/apt/lists/* \
+	&& docker-php-ext-install mbstring \
+    && docker-php-ext-install iconv  \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install gd \
+	&& docker-php-ext-install mcrypt\
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install bz2 \
+    && docker-php-ext-install ctype \
+    && docker-php-ext-install zip \
+	&& docker-php-ext-install pdo \
+	&& docker-php-ext-install pdo_mysql \
+	&& apt-get -y autoremove \ 
+	&& apt-get -y autoclean 
+	
+WORKDIR /usr/src/php/ext/
+RUN git clone https://github.com/php-memcached-dev/php-memcached.git \
+	&& docker-php-ext-configure php-memcached \
+	&& docker-php-ext-install php-memcached \
+	&& rm -rf php-memcached \
+	&& git clone -b master https://github.com/phpredis/phpredis.git \
+	&& docker-php-ext-configure phpredis \
+	&& docker-php-ext-install phpredis \
+	&& rm -rf phpredis
 
-# Let's roll
-RUN	apk update && \
-	apk upgrade && \
-	apk add --update tzdata && \
-	cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
-	echo "${TIMEZONE}" > /etc/timezone && \
-	apk add --update \
-		php5-mcrypt \
-		php5-soap \
-		php5-openssl \
-		php5-gmp \
-		php5-pdo_odbc \
-		php5-json \
-		php5-dom \
-		php5-pdo \
-		php5-zip \
-		php5-mysql \
-		php5-sqlite3 \
-		php5-apcu \
-		php5-pdo_pgsql \
-		php5-bcmath \
-		php5-gd \
-		php5-xcache \
-		php5-odbc \
-		php5-pdo_mysql \
-		php5-pdo_sqlite \
-		php5-gettext \
-		php5-xmlreader \
-		php5-xmlrpc \
-		php5-bz2 \
-		php5-memcache \
-		php5-mssql \
-		php5-iconv \
-		php5-pdo_dblib \
-		php5-curl \
-		php5-ctype \
-		php5-fpm && \
-    
-    # Set environments
-	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php5/php-fpm.conf && \
-	sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php5/php-fpm.conf && \
-	sed -i "s|;*listen\s*=\s*/||g" /etc/php5/php-fpm.conf && \
-	sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php5/php.ini && \
-	sed -i "s|;*memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|i" /etc/php5/php.ini && \
-    sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|i" /etc/php5/php.ini && \
-    sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php5/php.ini && \
-    sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php5/php.ini && \
-    sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php5/php.ini && \
-    
-    # Cleaning up
-	mkdir /www && \
-	apk del tzdata && \
-	rm -rf /var/cache/apk/*
+ENV PHALCON_VERSION=3.0.1
 
-# Set Workdir
-WORKDIR /www
+# Compile Phalcon
+RUN set -xe && \
+        curl -LO https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz && \
+        tar xzf v${PHALCON_VERSION}.tar.gz && cd cphalcon-${PHALCON_VERSION}/build && ./install && \
+        echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini && \
+        cd ../.. && rm -rf v${PHALCON_VERSION}.tar.gz cphalcon-${PHALCON_VERSION} 
+        # Insall Phalcon Devtools, see https://github.com/phalcon/phalcon-devtools/
+        #curl -LO https://github.com/phalcon/phalcon-devtools/archive/v${PHALCON_VERSION}.tar.gz && \
+        #tar xzf v${PHALCON_VERSION}.tar.gz && \
+        #mv phalcon-devtools-${PHALCON_VERSION} /usr/local/phalcon-devtools && \
+        #ln -s /usr/local/phalcon-devtools/phalcon.php /usr/local/bin/phalcon
 
-# Expose volumes
-VOLUME ["/www"]
+#Composer
+RUN curl -sS https://getcomposer.org/installer | php \
+	&& mv composer.phar /usr/local/bin/composer
 
-# Expose ports
+# PHP config
+ADD conf/php.ini /usr/local/etc/php/php.ini
+ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
+		
 EXPOSE 9000
-
-# Entry point
-ENTRYPOINT ["/usr/bin/php-fpm"]

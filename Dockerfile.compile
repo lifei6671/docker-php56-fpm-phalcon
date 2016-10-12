@@ -62,7 +62,7 @@ ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 		
 RUN git clone https://github.com/igbinary/igbinary.git && \
-	cd igbinary && phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make install && \
+	cd igbinary && phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
 	cd ../ && rm -rf igbinary
 
 EXPOSE 9000

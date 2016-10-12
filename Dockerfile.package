@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
 	bzip2 \
 	libbz2-dev \
 	libmemcached-dev \
-	&& echo "extension=mbstring.so" > /usr/local/etc/php/conf.d/mbstring.ini \
     && echo "extension=iconv.so" > /usr/local/etc/php/conf.d/iconv.ini  \
     && echo "extension=gd.so" > /usr/local/etc/php/conf.d/gd.ini \
 	&& echo "extension=mcrypt.so" > /usr/local/etc/php/conf.d/mcrypt.ini \

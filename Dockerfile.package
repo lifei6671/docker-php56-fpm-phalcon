@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     && echo "extension=zip.so" > /usr/local/etc/php/conf.d/zip.ini \
 	&& echo "extension=pdo.so" > /usr/local/etc/php/conf.d/pdo.ini \
 	&& echo "extension=pdo_mysql.so" > /usr/local/etc/php/conf.d/pdo_mysql.ini \
-	&& echo "extension=php-memcached.so" > /usr/local/etc/php/conf.d/php-memcached.ini \
+	&& echo "extension=memcached.so" > /usr/local/etc/php/conf.d/php-memcached.ini \
 	&& echo "extension=redis.so" > /usr/local/etc/php/conf.d/phpredis.ini \
 	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
 

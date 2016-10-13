@@ -22,7 +22,8 @@ RUN apt-get update && apt-get install -y \
 	&& echo "extension=memcached.so" > /usr/local/etc/php/conf.d/php-memcached.ini \
 	&& echo "extension=redis.so" > /usr/local/etc/php/conf.d/phpredis.ini \
 	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini 
+	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini \
+	&& echo "extension=bcmath.so" > /usr/local/etc/php/conf.d/bcmath.ini 
 
 
 # PHP config

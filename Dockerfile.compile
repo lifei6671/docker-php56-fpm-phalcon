@@ -60,9 +60,19 @@ RUN curl -sS https://getcomposer.org/installer | php \
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
-		
-RUN git clone https://github.com/igbinary/igbinary.git && \
-	cd igbinary && phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
-	cd ../ && rm -rf igbinary
+
+#igbinary
+RUN set -xe && \
+        curl -LO https://github.com/igbinary/igbinary/archive/1.2.1.tar.gz && \
+		tar xzf 1.2.1.tar.gz && cd igbinary-1.2.1 && \
+		phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make install && \
+		cd ../ && rm -rf igbinary-1.2.1
+	
+	
+RUN docker-php-source extract \
+	&& cd /usr/src/php/ext/bcmath \
+	&& phpize && ./configure --with-php-config=/usr/local/bin/php-config && make && make install \
+	&& make clean \
+	&& docker-php-source delete
 
 EXPOSE 9000

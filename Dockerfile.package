@@ -24,12 +24,7 @@ RUN apt-get update && apt-get install -y \
 	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini \
 	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini 
 
-RUN set -xe && \
-        curl -LO https://github.com/igbinary/igbinary/archive/1.2.1.tar.gz && \
-		tar xzf 1.2.1.tar.gz && cd igbinary-1.2.1 && \
-		phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make install && \
-		cd ../ && rm -rf igbinary-1.2.1
-	
+
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf

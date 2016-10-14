@@ -65,7 +65,7 @@ ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 RUN set -xe && \
         curl -LO https://github.com/igbinary/igbinary/archive/1.2.1.tar.gz && \
 		tar xzf 1.2.1.tar.gz && cd igbinary-1.2.1 && \
-		phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make install && \
+		phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
 		cd ../ && rm -rf igbinary-1.2.1
 	
 	
@@ -74,5 +74,12 @@ RUN docker-php-source extract \
 	&& phpize && ./configure --with-php-config=/usr/local/bin/php-config && make && make install \
 	&& make clean \
 	&& docker-php-source delete
+	
+#
+RUN set -xe && \
+	curl -LO https://github.com/xdebug/xdebug/archive/XDEBUG_2_4_1.tar.gz && \
+	tar xzf XDEBUG_2_4_1.tar.gz && cd XDEBUG_2_4_1 && \
+	phpize && ./configure --enable-xdebug && make && make install && \
+	cd ../ && rm -rf XDEBUG_2_4_1
 
 EXPOSE 9000

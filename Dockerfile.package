@@ -25,6 +25,11 @@ RUN apt-get update && apt-get install -y \
 	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini \
 	&& echo "extension=bcmath.so" > /usr/local/etc/php/conf.d/bcmath.ini 
 
+RUN echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
+		&& echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_connect_back=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini

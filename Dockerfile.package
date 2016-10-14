@@ -35,4 +35,4 @@ RUN echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
 ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 		
-EXPOSE 9000
+EXPOSE 9000 9001

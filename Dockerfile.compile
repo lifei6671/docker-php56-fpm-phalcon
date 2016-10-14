@@ -78,8 +78,8 @@ RUN docker-php-source extract \
 #
 RUN set -xe && \
 	curl -LO https://github.com/xdebug/xdebug/archive/XDEBUG_2_4_1.tar.gz && \
-	tar xzf XDEBUG_2_4_1.tar.gz && cd XDEBUG_2_4_1 && \
+	tar xzf XDEBUG_2_4_1.tar.gz && cd xdebug-XDEBUG_2_4_1 && \
 	phpize && ./configure --enable-xdebug && make && make install && \
-	cd ../ && rm -rf XDEBUG_2_4_1
+	cd ../ && rm -rf xdebug-XDEBUG_2_4_1
 
 EXPOSE 9000

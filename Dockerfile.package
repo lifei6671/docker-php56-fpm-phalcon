@@ -32,7 +32,7 @@ RUN echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
         && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo "xdebug.remote_host=172.17.0.1" >> /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo "xdebug.remote_connect_back=On" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.xdebug.idekey=dockerphp56" >> /usr/local/etc/php/conf.d/xdebug.ini
+		&& echo "xdebug.idekey=dockerphp56" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini

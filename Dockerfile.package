@@ -25,12 +25,14 @@ RUN apt-get update && apt-get install -y \
 	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini \
 	&& echo "extension=bcmath.so" > /usr/local/etc/php/conf.d/bcmath.ini 
 
+RUN DOCKER_HOST_IP=$(netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}')
+
 RUN echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
         && echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/xdebug.ini \
         && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
         && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.remote_host=192.168.4.104" >> /usr/local/etc/php/conf.d/xdebug.ini \
+		&& echo "xdebug.remote_host=$DOCKER_HOST_IP" >> /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo "xdebug.remote_autostart=On" >> /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo " xdebug.profiler_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
 		&& echo "xdebug.idekey=dockerphp56" >> /usr/local/etc/php/conf.d/xdebug.ini

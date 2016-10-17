@@ -23,20 +23,17 @@ RUN apt-get update && apt-get install -y \
 	&& echo "extension=redis.so" > /usr/local/etc/php/conf.d/phpredis.ini \
 	&& echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini \
 	&& echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini \
+	&& echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
 	&& echo "extension=bcmath.so" > /usr/local/etc/php/conf.d/bcmath.ini 
-
-RUN echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-        && echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/xdebug.ini \
-        && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-        && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.remote_host=192.168.4.104" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.remote_autostart=On" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo " xdebug.profiler_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-		&& echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 		
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 EXPOSE 9000 9001
+
+CMD["php-fpm"]

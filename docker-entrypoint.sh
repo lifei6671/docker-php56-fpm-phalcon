@@ -38,7 +38,7 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'php-fpm' -a "$(id -u)" = '0' ]; then
-	chown -R php-fpm .
+	chown -R www .
 	exec gosu php-fpm "$0" "$@"
 fi
 

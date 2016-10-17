@@ -15,16 +15,12 @@ RUN apt-get update && apt-get install -y \
 	libmemcached-dev \
 	git \
     && rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-install mbstring \
-    && docker-php-ext-install iconv  \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
 	&& docker-php-ext-install mcrypt\
     && docker-php-ext-install mysqli \
     && docker-php-ext-install bz2 \
-    && docker-php-ext-install ctype \
     && docker-php-ext-install zip \
-	&& docker-php-ext-install pdo \
 	&& docker-php-ext-install pdo_mysql \
 	&& apt-get -y autoremove \ 
 	&& apt-get -y autoclean 
@@ -60,5 +56,34 @@ RUN curl -sS https://getcomposer.org/installer | php \
 # PHP config
 ADD conf/php.ini /usr/local/etc/php/php.ini
 ADD conf/www.conf /usr/local/etc/php-fpm.d/www.conf
-		
+
+#igbinary
+RUN set -xe && \
+        curl -LO https://github.com/igbinary/igbinary/archive/1.2.1.tar.gz && \
+		tar xzf 1.2.1.tar.gz && cd igbinary-1.2.1 && \
+		phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
+		cd ../ && rm -rf igbinary-1.2.1
+	
+	
+RUN docker-php-source extract \
+	&& cd /usr/src/php/ext/bcmath \
+	&& phpize && ./configure --with-php-config=/usr/local/bin/php-config && make && make install \
+	&& make clean \
+	&& docker-php-source delete
+	
+#
+RUN set -xe && \
+	curl -LO https://github.com/xdebug/xdebug/archive/XDEBUG_2_4_1.tar.gz && \
+	tar xzf XDEBUG_2_4_1.tar.gz && cd xdebug-XDEBUG_2_4_1 && \
+	phpize && ./configure --enable-xdebug && make && make install && \
+	cd ../ && rm -rf xdebug-XDEBUG_2_4_1
+	
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
+
+ENTRYPOINT ["/entrypoint.sh"]
+
 EXPOSE 9000
+
+CMD ["php-fpm"]

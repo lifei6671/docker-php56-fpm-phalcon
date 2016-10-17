@@ -36,10 +36,4 @@ if [ "${1#-}" != "$1" ] || [ "${1%.conf}" != "$1" ]; then
 	set -- php-fpm "$@"
 fi
 
-# allow the container to be started with `--user`
-if [ "$1" = 'php-fpm' -a "$(id -u)" = '0' ]; then
-	chown -R www-data .
-	exec gosu php-fpm "$0" "$@"
-fi
-
 exec "$@"

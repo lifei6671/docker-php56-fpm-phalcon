@@ -29,3 +29,5 @@ if [ ! -f /xdebug_configured ]; then
 else
     echo "=> Xdebug is already configured"
 fi
+
+exec php-fpm

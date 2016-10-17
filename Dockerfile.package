@@ -36,6 +36,6 @@ RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-EXPOSE 9000 9001
+EXPOSE 9000
 
 CMD ["php-fpm"]
